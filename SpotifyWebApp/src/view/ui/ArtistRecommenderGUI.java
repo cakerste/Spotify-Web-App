@@ -55,7 +55,7 @@ public class ArtistRecommenderGUI implements ActionListener {
 	public ArtistRecommenderGUI() {
 		frame = new JFrame("My First GUI");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,500);
+        frame.setSize(600,550);
         setUpLogin();
         frame.getContentPane().add(BorderLayout.SOUTH, panel);
         frame.getContentPane().add(BorderLayout.CENTER, auth);
@@ -108,8 +108,11 @@ public class ArtistRecommenderGUI implements ActionListener {
 		artistHeader = new JLabel("Your most listented to artists recently");
 		recentArtists = new JList<String>(AuthorizationCodeUri.getArtists());
 		recentArtists.setFixedCellHeight(145);
+		recentArtists.setFixedCellWidth(200);
 		recentArtists.setBackground(frame.getBackground());
-		recentArtists.setPreferredSize(new Dimension(200, 400));
+		artistHeader.setPreferredSize(new Dimension(250, 50));
+		artistHeader.setAlignmentX(Component.CENTER_ALIGNMENT);
+		recentArtists.setAlignmentX(Component.CENTER_ALIGNMENT);
 		DefaultListCellRenderer renderer = (DefaultListCellRenderer)recentArtists.getCellRenderer();
 		renderer.setHorizontalAlignment(SwingConstants.CENTER);
 		panel2.add(artistHeader);
@@ -117,11 +120,14 @@ public class ArtistRecommenderGUI implements ActionListener {
 		recs = new JList<String>(AuthorizationCodeUri.authorizationCodeUri_Sync());
 		recs.setFixedCellHeight(recentArtists.getFixedCellHeight() / 3);
 		recs.setBackground(frame.getBackground());
+		recsHeader.setAlignmentX(Component.CENTER_ALIGNMENT);
+		recs.setAlignmentX(Component.CENTER_ALIGNMENT);
+		recsHeader.setPreferredSize(new Dimension(250, 50));
 		panel3.add(recsHeader);
 		panel3.add(recs);
 		frame.getContentPane().add(BorderLayout.LINE_END, panel3);
 		frame.getContentPane().add(BorderLayout.LINE_START, panel2);
-		recs.setVisible(false);
+		panel3.setVisible(false);
 		recs.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				if (evt.getClickCount() == 2) {
@@ -152,7 +158,7 @@ public class ArtistRecommenderGUI implements ActionListener {
 		} else if (e.getSource() == auth) {
 			AuthorizationCodeUri.openSpotify();
 		} else if (e.getSource() == getRecs) {
-			recs.setVisible(true);
+			panel3.setVisible(true);
 		}
 	}
 	
