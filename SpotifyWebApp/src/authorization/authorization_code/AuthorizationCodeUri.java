@@ -198,7 +198,9 @@ public class AuthorizationCodeUri {
 		for (int i = 0; i < artist.length(); i++) {
 			if (artist.charAt(i) == ' ') {
 				str.append('+');
-			} else if (artist.charAt(i) != '.') {
+			} else if (artist.charAt(i) == ',') { // Special case 1
+				str.append("%2C");
+			} else if (artist.charAt(i) != '.') { // Special case 2
 				str.append(artist.charAt(i));
 			}
 		}

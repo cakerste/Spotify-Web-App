@@ -4,17 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,7 +26,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import authorization.authorization_code.AuthorizationCodeUri;
@@ -48,17 +50,20 @@ public class ArtistRecommenderGUI implements ActionListener {
 	private JPanel panel1, panel2, panel3;
 	private JLabel user;
 	private JLabel artistHeader, recsHeader;
+	private BufferedImage img;
+	private JLabel picLabel;
+	private JPanel picPanel;
 	
 	/**
 	 * sets up the first screen, calls the login method
 	 */
 	public ArtistRecommenderGUI() {
-		frame = new JFrame("My First GUI");
+		frame = new JFrame("Artist Recommender");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600,550);
         setUpLogin();
         frame.getContentPane().add(BorderLayout.SOUTH, panel);
-        frame.getContentPane().add(BorderLayout.CENTER, auth);
+        frame.getContentPane().add(BorderLayout.CENTER, picPanel);
         frame.setVisible(true);
 	}
 	
@@ -66,6 +71,7 @@ public class ArtistRecommenderGUI implements ActionListener {
 	 * sets up the login screen
 	 */
 	private void setUpLogin() {
+		// set up the bottom part of the screen
 		panel = new JPanel();
         label = new JLabel("Enter URL");
         ta = new JTextArea(1,20);
@@ -76,13 +82,30 @@ public class ArtistRecommenderGUI implements ActionListener {
         enter.addActionListener(this);
         reset = new JButton("Reset");
         reset.addActionListener(this);
-        auth = new JButton("Get Authorization");
-        auth.addActionListener(this);
         panel.add(label);
         panel.add(sp);
         panel.add(enter);
         panel.add(reset);
-       
+        
+        // set up the center of the screen
+        try {
+			img = ImageIO.read(new File("images/spotifyicon1.png"));
+		} catch (IOException e) {
+			System.out.println("Unable to load file");
+		}
+        Image scaledLogo = img.getScaledInstance(400, 400, Image.SCALE_SMOOTH);
+        ImageIcon icon = new ImageIcon(scaledLogo);
+        picLabel = new JLabel(icon);
+        picLabel.setPreferredSize(new Dimension(400, 400));
+        picPanel = new JPanel();
+        picPanel.setLayout(new BoxLayout(picPanel, BoxLayout.PAGE_AXIS));
+        auth = new JButton("Get Authorization");
+        auth.addActionListener(this);
+        auth.setAlignmentX(Component.CENTER_ALIGNMENT);
+        picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        picPanel.add(picLabel);
+        picPanel.add(auth);
+        picPanel.setBackground(Color.WHITE);
 	}
 	
 	/**
@@ -149,7 +172,7 @@ public class ArtistRecommenderGUI implements ActionListener {
 		} else if (e.getSource() == enter) {
 			if (AuthorizationCodeUri.login(ta.getText()) == 0) {
 				frame.remove(panel);
-				frame.remove(auth);
+				frame.remove(picPanel);
 				setUpRecs();
 			} else {
 				JOptionPane.showMessageDialog(frame, "Incorrect URL");
