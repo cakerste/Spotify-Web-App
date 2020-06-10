@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
@@ -52,7 +54,10 @@ public class ArtistRecommenderGUI implements ActionListener {
 	private JLabel artistHeader, recsHeader;
 	private BufferedImage img;
 	private JLabel picLabel;
+	private JLabel title;
 	private JPanel picPanel;
+	
+	public static final int PIC_SIZE = 200;
 	
 	/**
 	 * sets up the first screen, calls the login method
@@ -88,22 +93,30 @@ public class ArtistRecommenderGUI implements ActionListener {
         panel.add(reset);
         
         // set up the center of the screen
+        title = new JLabel("Artist Recommender");
+        title.setFont(new Font("Serif", Font.BOLD, 30));
+        title.setForeground(Color.decode("#1DB954"));
         try {
-			img = ImageIO.read(new File("images/spotifyicon1.png"));
+			img = ImageIO.read(new File("images/spotifyicon2.png"));
 		} catch (IOException e) {
 			System.out.println("Unable to load file");
 		}
-        Image scaledLogo = img.getScaledInstance(400, 400, Image.SCALE_SMOOTH);
+        Image scaledLogo = img.getScaledInstance(PIC_SIZE, PIC_SIZE, Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(scaledLogo);
         picLabel = new JLabel(icon);
-        picLabel.setPreferredSize(new Dimension(400, 400));
+        picLabel.setPreferredSize(new Dimension(PIC_SIZE, PIC_SIZE));
         picPanel = new JPanel();
         picPanel.setLayout(new BoxLayout(picPanel, BoxLayout.PAGE_AXIS));
         auth = new JButton("Get Authorization");
         auth.addActionListener(this);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
         auth.setAlignmentX(Component.CENTER_ALIGNMENT);
         picLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        picPanel.add(Box.createVerticalStrut(30));
+        picPanel.add(title);
+        picPanel.add(Box.createVerticalStrut(80));
         picPanel.add(picLabel);
+        picPanel.add(Box.createVerticalStrut(70));
         picPanel.add(auth);
         picPanel.setBackground(Color.WHITE);
 	}

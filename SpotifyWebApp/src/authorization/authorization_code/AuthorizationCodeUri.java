@@ -179,6 +179,11 @@ public class AuthorizationCodeUri {
   	 * @param name of the artist
   	 */
   	public static void getArtistInfo(String name) {
+  		// Special case (spotify name and music-map name don't match up)
+  		if (name.equals("Odd Future Wolf Gang Kill Them All")) {
+  			name = "Odd Future";
+  		}
+  		
   		try {
 			Artist[] a = spotifyApi.searchArtists(name).build().execute().getItems();
 			URI url = new URI("https://open.spotify.com/artist/" + a[0].getId());
