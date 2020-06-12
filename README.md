@@ -1,6 +1,6 @@
 # Artist Recommender
 
-Artist Recommender looks at your most recently listened to artists on spotify and gives you recommendations based on that
+Artist Recommender looks at your most recently listened to artists on spotify and gives you recommendations based on that.  It looks at your 50 most recent songs and looks at the most listened to artists out of that set.  It then takes those artists and gets 3 recommendations from https://www.music-map.com/.
 
 ## Usage
 1. Click "Get Authorization"
