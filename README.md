@@ -10,5 +10,6 @@ Artist Recommender looks at your most recently listened to artists on spotify an
 ## Sources
 - Spotify logo: https://developer.spotify.com/assets/branding-guidelines/icon1@2x.png
 - Java wrapper: https://github.com/thelinmichael/spotify-web-api-java
+- Recommendations: https://www.music-map.com/
 ## Demo
 A demo is available under the 'demo' folder.  Last Updated: 6/11/2020
