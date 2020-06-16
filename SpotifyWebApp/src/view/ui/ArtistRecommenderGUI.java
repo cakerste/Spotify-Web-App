@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
@@ -56,6 +58,7 @@ public class ArtistRecommenderGUI implements ActionListener {
 	private JLabel picLabel;
 	private JLabel title;
 	private JPanel picPanel;
+	private JPanel arrowPanel;
 	
 	public static final int PIC_SIZE = 200;
 	
@@ -141,23 +144,24 @@ public class ArtistRecommenderGUI implements ActionListener {
 		user.setHorizontalAlignment(SwingConstants.RIGHT);
 		frame.add(BorderLayout.PAGE_START, panel1);
 		
-		artistHeader = new JLabel("Your most listented to artists recently");
+		artistHeader = new JLabel("<html>Your most listented<br>to artists recently</html>");
 		recentArtists = new JList<String>(AuthorizationCodeUri.getArtists());
-		recentArtists.setFixedCellHeight(145);
-		recentArtists.setFixedCellWidth(200);
+		recentArtists.setFixedCellHeight(147);
+		recentArtists.setFixedCellWidth(150);
 		recentArtists.setBackground(frame.getBackground());
-		artistHeader.setPreferredSize(new Dimension(250, 50));
+		artistHeader.setPreferredSize(new Dimension(150, 150));
 		artistHeader.setAlignmentX(Component.CENTER_ALIGNMENT);
+		artistHeader.setHorizontalAlignment(JLabel.CENTER);
 		recentArtists.setAlignmentX(Component.CENTER_ALIGNMENT);
 		DefaultListCellRenderer renderer = (DefaultListCellRenderer)recentArtists.getCellRenderer();
-		renderer.setHorizontalAlignment(SwingConstants.CENTER);
+		renderer.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel2.add(artistHeader);
 		panel2.add(recentArtists);
 		recs = new JList<String>(AuthorizationCodeUri.authorizationCodeUri_Sync());
 		recs.setFixedCellHeight(recentArtists.getFixedCellHeight() / 3);
 		recs.setBackground(frame.getBackground());
-		recsHeader.setAlignmentX(Component.CENTER_ALIGNMENT);
-		recs.setAlignmentX(Component.CENTER_ALIGNMENT);
+		recsHeader.setAlignmentX(Component.LEFT_ALIGNMENT);
+		recs.setAlignmentX(Component.LEFT_ALIGNMENT);
 		recsHeader.setPreferredSize(new Dimension(250, 50));
 		panel3.add(recsHeader);
 		panel3.add(recs);
@@ -171,6 +175,29 @@ public class ArtistRecommenderGUI implements ActionListener {
 				}
 			}
 		});
+		arrowPanel = new JPanel() {
+			private static final long serialVersionUID = 1L;
+
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				
+				for (int i = 0; i < AuthorizationCodeUri.RECS_PER_ARTIST; i++) {
+					if (i == 0) {
+						g.setColor(Color.decode("#1DB954"));
+					} else if (i == 1) {
+						g.setColor(Color.decode("#FFFFFF"));
+					} else {
+						g.setColor(Color.decode("#191414"));
+					}
+					g.drawLine(0, 112 + 147 * i, 200, 62 + 147 * i);
+					g.drawLine(0, 112 + 147 * i, 200, 112 + 147 * i);
+					g.drawLine(0, 112 + 147 * i, 200, 165 + 147 * i);
+				}
+			}
+		};
+		frame.getContentPane().add(BorderLayout.CENTER, arrowPanel);
+		arrowPanel.setVisible(false);
+		
 		frame.validate();
 		frame.repaint();
 	}
@@ -195,6 +222,7 @@ public class ArtistRecommenderGUI implements ActionListener {
 			AuthorizationCodeUri.openSpotify();
 		} else if (e.getSource() == getRecs) {
 			panel3.setVisible(true);
+			arrowPanel.setVisible(true);
 		}
 	}
 	
